@@ -31,4 +31,4 @@ number:int
 
 data_transform = FOREACH data GENERATE name, color;
 filtered = FILTER data_transform BY (color=='blue' AND name MATCHES 'Z.*');
-STORE filtered INTO 'output' USING PigStorage(',');
+STORE filtered INTO 'output' USING PigStorage(' ');
