@@ -15,6 +15,6 @@ $ pig -x local -f pregunta.pig
 
 data = LOAD 'data.tsv' AS (letter:chararray, date:chararray, number:int);
 
-order_list = GROUP data BY lleter ASC, number ASC;
+order_list = ORDER data BY letter ASC, number ASC;
 
 STORE order_list INTO 'output' USING PigStorage(',');
