@@ -34,3 +34,38 @@ $ pig -x local -f pregunta.pig
         >>> Escriba su respuesta a partir de este punto <<<
 */
 
+data = LOAD 'data.csv' USING PigStorage(',') AS (
+key:int,
+name:chararray,
+surname:chararray,
+date:chararray,
+color:chararray,
+number:int
+);
+
+data = FOREACH data GENERATE ToDate(date, 'yyyy-MM-dd') AS  date;
+data_transform = FOREACH data GENERATE
+ToString(date,'yyyy-MM-dd'),
+LOWER(ToString(date, 'dd')),
+ToString(date, 'd'),
+LOWER(ToString(date, 'E')),
+LOWER(ToString(date, 'EEEE'))
+;
+
+data_transform = FOREACH data_transform GENERATE $0, $1, $2,
+ REPLACE($3,'mon', 'lun'), REPLACE($4,'monday', 'lunes');
+data_transform = FOREACH data_transform GENERATE $0, $1, $2,
+ REPLACE($3,'tue', 'mar'), REPLACE($4,'tuesday', 'martes');
+data_transform = FOREACH data_transform GENERATE $0, $1, $2,
+ REPLACE($3,'wed', 'mie'), REPLACE($4,'wednesday', 'miercoles');
+data_transform = FOREACH data_transform GENERATE $0, $1, $2,
+ REPLACE($3,'thu', 'jue'), REPLACE($4,'thursday', 'jueves');
+data_transform = FOREACH data_transform GENERATE $0, $1, $2,
+ REPLACE($3,'fri', 'vie'), REPLACE($4,'friday', 'viernes');
+data_transform = FOREACH data_transform GENERATE $0, $1, $2,
+ REPLACE($3,'sat', 'sab'), REPLACE($4,'saturday', 'sabado');
+data_transform = FOREACH data_transform GENERATE $0, $1, $2,
+ REPLACE($3,'sun', 'dom'), REPLACE($4,'sunday', 'domingo');
+
+
+STORE data_transform INTO 'output' USING PigStorage(',');
