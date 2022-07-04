@@ -19,4 +19,4 @@ letter_tmp = FOREACH data GENERATE letter as ll;
 groupby = GROUP letter_tmp BY ll;
 
 counter_letters = FOREACH groupby GENERATE group, COUNT(letter_tmp);
-STORE counter_letters INTO 'output' USING PigStorage(' ');
+STORE counter_letters INTO 'output' USING PigStorage(',');
